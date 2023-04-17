@@ -25,12 +25,16 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="all_posts.php">Posts <span class="sr-only"></span></a>
                     </li>
-                    <?php if(isset($_SESSION['id'])){ ?>
+                    <?php if(isset($_SESSION['id']) && $_SESSION['is_admin'] == 1){ ?>
+                        <li class="nav-item">
+                        <a class="nav-link " href="logout.php" tabindex="-1" aria-disabled="true">Log out </a>
+                    </li>
+                    <?php }elseif(isset($_SESSION['id'])){ ?>
                     <li class="nav-item active">
                         <a class="nav-link" href="dashboard.php">Manage Posts <span class="sr-only"></span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#" tabindex="-1" aria-disabled="true">View Profile </a>
+                        <a class="nav-link " href="profile.php" tabindex="-1" aria-disabled="true">View Profile </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="logout.php" tabindex="-1" aria-disabled="true">Log out </a>
