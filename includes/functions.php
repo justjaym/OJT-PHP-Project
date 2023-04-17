@@ -172,8 +172,8 @@ function profileUpload($data){
 }
 
 function getAllUser(){
-    // $q = "SELECT u.id as `uid`, u.first_name, u.last_name, COUNT(b.author_id) as `post` FROM users u INNER JOIN blogs b on u.id = b.author_id";
-    $q = "SELECT * FROM users";
+    $q = "SELECT u.id as `uid`, u.first_name, u.last_name, COUNT(b.author_id) as `post` FROM users u INNER JOIN blogs b on u.id = b.author_id GROUP BY b.author_id";
+    // $q = "SELECT * FROM users";
     $result = mysqli_query($_SESSION['conn'], $q);
     $temp = array();
     while ($row = $result->fetch_assoc()) {

@@ -19,10 +19,10 @@
     <tbody>
     <?php foreach(getAllUser() as $res) {?>
     <tr>
-        <th scope="row"><?= $res['id']?></th>
+        <th scope="row"><?= $res['uid']?></th>
         <td><?= $res['first_name'] . ' ' . $res['last_name']?></td>
         <td><?= $res['post']?></td>
-        <td><a class="btn btn-success" href=".php?id=<?= $res['id']?>">Activate</a></td>
+        <td><a class="btn btn-success" href=".php?id=<?= $res['uid']?>">Activate</a></td>
     </tr>
     <?php } ?>
     </tbody>
