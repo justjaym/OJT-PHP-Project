@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 17, 2023 at 07:46 AM
+-- Generation Time: Apr 18, 2023 at 10:09 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -73,7 +73,7 @@ INSERT INTO `users` (`id`, `first_name`, `middle_name`, `last_name`, `email`, `p
 (1, 'jm', 'jm', 'jm', 'j@m.com', '123', 'agree', 0, 1, 'default.png'),
 (2, 'jm1', 'jm1', 'jm1', 'j@m1.com', '123', 'agree', 0, 1, 'default.png'),
 (3, 'jm2', 'jm2', 'jm2', 'j@m2.com', '$2y$10$h/e8fYqVa3gcdKPt5KA.LeS56obK/TtbNybgQnoOlttRY//Uhvvia', 'agree', 0, 1, 'default.png'),
-(4, 'john', 'john', 'john', 'jo@hn.com', '$2y$10$jovbnAZq2N7yR1Zu72eoTOV3372cGLEm/Mx6kQIMwGppJHnVmCU02', 'agree', 0, 1, 'default.png'),
+(4, 'john', 'john', 'john', 'jaymkawaii@gmail.com', '$2y$10$mMUrs269U1Owi.q1yAhY.u4TAEI7nt7hXj/3jTp3ZFtTSInoLJ236', 'agree', 0, 1, 'default.png'),
 (5, 'admin', 'admin', 'admin', 'admin', '$2y$10$jovbnAZq2N7yR1Zu72eoTOV3372cGLEm/Mx6kQIMwGppJHnVmCU02', 'agree', 1, 1, 'default.png'),
 (7, 'jane', 'jane', 'jane', 'ja@ne.com', '$2y$10$TYhuhUwKXK58DYKWx9Dk8Ox8jzH8EG/.JC0uPK5PNQjlQOTHhWezG', 'agree', 0, 1, 'file_20230417065808.jpg');
 
