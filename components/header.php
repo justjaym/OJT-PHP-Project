@@ -26,16 +26,26 @@
                         <a class="nav-link" href="all_posts.php">Posts <span class="sr-only"></span></a>
                     </li>
                     <?php if(isset($_SESSION['id']) && $_SESSION['is_admin'] == 1){ ?>
-                        <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link " href="dashboard.php" tabindex="-1" aria-disabled="true">Bloggers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="admin_users.php" tabindex="-1" aria-disabled="true">Manage Accounts</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link " href="logout.php" tabindex="-1" aria-disabled="true">Log out </a>
                     </li>
-                    <?php }elseif(isset($_SESSION['id'])){ ?>
+                    <?php }elseif(isset($_SESSION['id']) && $_SESSION['is_active'] == 1){ ?>
                     <li class="nav-item active">
                         <a class="nav-link" href="dashboard.php">Manage Posts <span class="sr-only"></span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="profile.php" tabindex="-1" aria-disabled="true">View Profile </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="logout.php" tabindex="-1" aria-disabled="true">Log out </a>
+                    </li>
+                    <?php }elseif(isset($_SESSION['id']) && $_SESSION['is_active'] == 0){ ?>
                     <li class="nav-item">
                         <a class="nav-link " href="logout.php" tabindex="-1" aria-disabled="true">Log out </a>
                     </li>

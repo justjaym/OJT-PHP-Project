@@ -1,7 +1,100 @@
 <?php
 require('db_conn.php');
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
 $_SESSION['conn'] = $conn;
+function forgotPass($data){
+    extract($data);
+    if(empty($email)){
+        $msg = "<div class='row justify-content-center text-center' style='color: red'><div class='col-4'>All fields are required!</div></div>";
+        $_SESSION['msg'] = $msg;
+        return header('Location:forgot.php');
+    }else{
+        $q = "SELECT * FROM users WHERE email=?";
+        $stmt = mysqli_prepare($_SESSION['conn'], $q);
+        mysqli_stmt_bind_param($stmt, 's',$email);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
+        if(!$row > 0){
+            $msg = "<div class='row justify-content-center text-center' style='color: red'><div class='col-4'>Email does not exist!</div></div>";
+            $_SESSION['msg'] = $msg;
+            return header('Location:forgot.php');
+        }else{
+            $mail = new PHPMailer(true);
+            $mail->isSMTP();                                            //Send using SMTP
+            $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+            $mail->Username   = 'ponzejbg@gmail.com';                     //SMTP username
+            $mail->Password   = 'dtqmvptbqybpvbjn';                               //SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+            $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+            //Recipients
+            $mail->setFrom('ponzejbg@gmail.com', 'Mailer');
+            $mail->addAddress($email);     //Add a recipient
+            $mail->addReplyTo('no-reply@gmail.com', 'No reply');
+
+            //Content
+            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->Subject = 'Blog Site: Password Reset';
+            $mail->Body    = '<a href="http://localhost/phpict/reset.php">Reset Password</a>';
+            $mail->AltBody = '<a href="http://localhost/phpict/reset.php">Reset Password</a>';
+
+            $mail->send();
+            $msg = "<div class='row justify-content-center text-center' style='color: green'><div class='col-4'>Check email for the reset password link</div></div>";
+            $_SESSION['msg'] = $msg;
+            return header('Location:forgot.php');
+        }
+    }    
+}
+
+function resetPass($data){
+    extract($data);
+    if(empty($email) || empty($password) || empty($cpassword)){
+        $msg = "<div class='row justify-content-center text-center' style='color: red'><div class='col-4'>All fields are required!</div></div>";
+        $_SESSION['msg'] = $msg;
+        return header('Location:reset.php');
+    }else{
+        $q = "SELECT * FROM users WHERE email=?";
+        $stmt = mysqli_prepare($_SESSION['conn'], $q);
+        mysqli_stmt_bind_param($stmt, 's', $email);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
+        if(!$row > 0){
+            $msg = "<div class='row justify-content-center text-center' style='color: red'><div class='col-4'>Email does not exist!</div></div>";
+            $_SESSION['msg'] = $msg;
+            return header('Location:reset.php');
+        }elseif(!preg_match("/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{6,20}$/", $password)){
+            $msg = "<div class='row justify-content-center text-center' style='color: red'><div class='col-4'>Invalid Password Format</div></div>";
+            $_SESSION['msg'] = $msg;
+            header('Location:reset.php');
+        }elseif($password != $cpassword){
+            $msg = "<div class='row justify-content-center text-center' style='color: red'><div class='col-4'>Password does not Match</div></div>";
+            $_SESSION['msg'] = $msg;
+            header('Location:reset.php');
+        }else{
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $q = "UPDATE users SET password=? WHERE email=?";
+            $stmt = mysqli_prepare($_SESSION['conn'], $q);
+            mysqli_stmt_bind_param($stmt, 'ss', $hashed_password, $email);
+            $result = mysqli_stmt_execute($stmt);
+            $msg = "<div class='row justify-content-center text-center' style='color: green'><div class='col-4'>Password Updated Successfully</div></div>";
+            $_SESSION['msg'] = $msg;
+            return header('Location:reset.php');
+        }
+    }
+}
+
+
 
 function registerUser($data){
     extract($data);
@@ -171,8 +264,8 @@ function profileUpload($data){
     header('Location:profile.php');
 }
 
-function getAllUser(){
-    $q = "SELECT u.id as `uid`, u.first_name, u.last_name, COUNT(b.author_id) as `post` FROM users u INNER JOIN blogs b on u.id = b.author_id GROUP BY b.author_id";
+function getUserStat(){
+    $q = "SELECT u.id as `uid`, u.first_name, u.last_name, u.is_active, COUNT(b.author_id) as `post` FROM users u INNER JOIN blogs b on u.id = b.author_id GROUP BY b.author_id";
     // $q = "SELECT * FROM users";
     $result = mysqli_query($_SESSION['conn'], $q);
     $temp = array();
@@ -180,4 +273,33 @@ function getAllUser(){
         $temp[] = $row;
     }
     return $temp;
+}
+
+function getAllUser(){
+    $q = "SELECT * FROM users WHERE NOT is_admin=1";
+    // $q = "SELECT * FROM users";
+    $result = mysqli_query($_SESSION['conn'], $q);
+    $temp = array();
+    while ($row = $result->fetch_assoc()) {
+        $temp[] = $row;
+    }
+    return $temp;
+}
+
+function deactivateAccount($data){
+    extract($data);
+    $q = "UPDATE users SET is_active = 0 where id = $deactivate";
+    $result = mysqli_query($_SESSION['conn'], $q);
+    $msg = "<div class='row justify-content-center text-center' style='color: green'><div class='col-4'>Acoount Deactivated</div></div>";
+    $_SESSION['msg'] = $msg;
+    header('Location:admin_users.php');
+}
+
+function activateAccount($data){
+    extract($data);
+    $q = "UPDATE users SET is_active = 1 where id = $activate";
+    $result = mysqli_query($_SESSION['conn'], $q);
+    $msg = "<div class='row justify-content-center text-center' style='color: green'><div class='col-4'>Acoount Activated</div></div>";
+    $_SESSION['msg'] = $msg;
+    header('Location:admin_users.php');
 }

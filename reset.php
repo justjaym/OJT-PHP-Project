@@ -2,11 +2,11 @@
 
 <div class="container mt-5">
     <div class="text-center">
-        <h1>Login User</h1>
+        <h1>Reset Password</h1>
     </div>
     <form method="POST">
     <?php if(isset($_SESSION['msg'])){ echo $_SESSION['msg']; unset($_SESSION['msg']);}else{ echo ' '; } ?>
-    <?= (isset($_POST['btn_login'])) ? loginUser($_POST) : ''; ?>
+    <?= (isset($_POST['btn_reset'])) ? resetPass($_POST) : ''; ?>
     <div class="row justify-content-center">
             <div class="col-4">
                 <div class="form-group">
@@ -18,17 +18,22 @@
         <div class="row justify-content-center">
             <div class="col-4">
                 <div class="form-group">
-                    <label for="">Password</label>
-                    <input type="password" name="password" class="mt-2 form-control" autocomplete="off" placeholder="Enter your password">
+                    <label for="">New Password</label>
+                    <input type="password" name="password" class="mt-2 form-control" autocomplete="off" placeholder="Enter your new password">
                 </div>
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-3">
-                <a href="forgot.php">Forgot Password?</a>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="">Confirm New Password</label>
+                    <input type="password" name="cpassword" class="mt-2 form-control" autocomplete="off" placeholder="Confirm your new password">
+                </div>
             </div>
-            <div class="col-1">
-                <button type="submit" name="btn_login" class="mt-3 btn btn-primary">Login</button>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <button type="submit" name="btn_reset" class="mt-3 btn btn-primary">Update Password</button>
             </div>
         </div>
     </form>

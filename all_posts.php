@@ -1,6 +1,6 @@
 <?php include('components/header.php'); ?>
 <div class="container mt-1">
-    <?php if(isset($_SESSION['id'])){ ?>
+    <?php if(isset($_SESSION['id'])  && $_SESSION['is_active'] == 1){ ?>
         <h2>Welcome <?= $_SESSION['first_name']?></h2>
         <a class="btn btn-outline-warning" href="create_post.php">Create Blog</a>
         <br>
