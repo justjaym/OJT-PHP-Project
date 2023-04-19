@@ -228,7 +228,7 @@ function editPost($data){
     if (empty($title) || empty($tags) || empty($body)) {
         $msg = "<div class='row justify-content-center text-center' style='color: red'><div class='col-4'>All fields are required!</div></div>";
         $_SESSION['msg'] = $msg;
-        header('Location:create_post.php');
+        header('Location:edit_post.php');
     }else{
         $id = $_GET['id'];
         $q = "UPDATE blogs SET title = ?, tags = ?, body = ? WHERE id = ?";
@@ -313,4 +313,36 @@ function activateAccount($data){
     $msg = "<div class='row justify-content-center text-center' style='color: green'><div class='col-4'>Acoount Activated</div></div>";
     $_SESSION['msg'] = $msg;
     header('Location:admin_users.php');
+}
+
+function blogComment($data){
+    extract($data);
+    if (strlen(trim($comment)) == 0) {
+        echo "hhihihh";
+        $msg = "<div class='row ' style='color: red'><div class='col-4'>Comment can not be empty!</div></div>";
+        $_SESSION['msg'] = $msg;
+        header('Location:single_post.php?id='.$_GET['id']);
+    }else{
+        $id = $_GET['id'];
+        $author_id = $_SESSION['id'];
+        $q = "INSERT INTO comments (blog_id, user_id, comment, date_created) VALUES (?,?,?,?)";
+        $stmt = mysqli_prepare($_SESSION['conn'], $q);
+        mysqli_stmt_bind_param($stmt, 'iiss', $id, $author_id, $comment, date("Y-m-d H:i:s"));
+        mysqli_stmt_execute($stmt);
+        mysqli_close($_SESSION['conn']);
+        $msg = "<div class='row ' style='color: green'><div class='col-4'>Comment Submitted</div></div>";
+        $_SESSION['msg'] = $msg;
+        header('Location:single_post.php?id='.$_GET['id']);
+    }
+}
+
+function getComments(){
+    $id = $_GET['id'];
+    $q = "SELECT CONCAT(u.first_name, ' ', u.last_name) as `fullname`, c.comment, c.date_created FROM comments c INNER JOIN users u ON c.user_id = u.id WHERE c.blog_id = $id ORDER BY c.id DESC";
+    $result = mysqli_query($_SESSION['conn'], $q);
+    $temp = array();
+    while ($row = $result->fetch_assoc()) {
+        $temp[] = $row;
+    }
+    return $temp;
 }

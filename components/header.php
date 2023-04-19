@@ -1,3 +1,4 @@
+<?php ob_start(); ?>
 <?php require('includes/functions.php') ?>
 <!DOCTYPE html>
 <html lang="en">
