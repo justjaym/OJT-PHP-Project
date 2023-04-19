@@ -10,6 +10,12 @@
     <link rel="icon" type="image/png" sizes="16x16" href="https://codeigniter.com/favicons/favicon-16x16.png">
     <!-- <link rel="stylesheet" href="bootstrap.min.css"> -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        /* mouse over link */
+        a:hover {
+        color: orange;
+        }
+    </style>
 </head>
 
 <body>
@@ -59,9 +65,9 @@
                     <?php } ?>
 
                 </ul>
-                <form class="d-flex" method="post" action="/search">
-                    <input class="form-control me-sm-2 " type="search" name="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-warning my-2 my-sm-0 " type="submit">Search</button>
+                <form class="d-flex" method="GET">
+                    <input class="form-control me-sm-2 " type="search" name="tag" placeholder="Search" aria-label="Search">
+                    <a href="all_posts.php?tag=" class="btn btn-outline-warning my-2 my-sm-0 " >Search</a>
                 </form>
             </div>
         </nav>

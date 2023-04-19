@@ -192,13 +192,24 @@ function getPosts(){
 }
 
 function getAllPosts(){
-    $q = "SELECT b.id as `bid`, b.author_id, b.title, b.body, b.tags, b.date_created, u.id, u.first_name, u.last_name  FROM blogs b INNER JOIN users u ON b.author_id = u.id";
-    $result = mysqli_query($_SESSION['conn'], $q);
-    $temp = array();
-    while ($row = $result->fetch_assoc()) {
-        $temp[] = $row;
+    if(isset($_GET['tag'])){
+        $tag = $_GET['tag'];
+        $q = "SELECT b.id as `bid`, b.author_id, b.title, b.body, b.tags, b.date_created, u.id, u.first_name, u.last_name  FROM blogs b INNER JOIN users u ON b.author_id = u.id WHERE tags LIKE '%$tag%' ORDER BY bid DESC";
+        $result = mysqli_query($_SESSION['conn'], $q);
+        $temp = array();
+        while ($row = $result->fetch_assoc()) {
+            $temp[] = $row;
+        }
+        return $temp;
+    }else{
+        $q = "SELECT b.id as `bid`, b.author_id, b.title, b.body, b.tags, b.date_created, u.id, u.first_name, u.last_name  FROM blogs b INNER JOIN users u ON b.author_id = u.id ORDER BY bid DESC";
+        $result = mysqli_query($_SESSION['conn'], $q);
+        $temp = array();
+        while ($row = $result->fetch_assoc()) {
+            $temp[] = $row;
+        }
+        return $temp;
     }
-    return $temp;
 }
 
 function getSinglePosts(){

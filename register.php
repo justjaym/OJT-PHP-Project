@@ -58,13 +58,9 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-2">
+            <div class="col-3">
                 <div class="icheck-primary">
-                    <input type="checkbox" name="privacy_policy" value="agree">
-                    <label for="">
-                        <br>
-                        I agree to <a href="privacy_policy.php">Privacy Policy</a>
-                    </label>
+                    <input type="checkbox"  id='check'name="privacy_policy" value="agree"> I agree to <a href="privacy_policy.php">Privacy Policy</a>
                 </div>
             </div>
             <div class="col-1">
