@@ -2,7 +2,7 @@
 
 <div class="container mt-5">
     <div>
-        <h1><b>Publish your passions, your way</b></h1>
+        <h1><b>Publish your passions, your way. Ponce!</b></h1>
         <h4>Create a unique and beautiful blog easily.</h4>
         <a class="btn btn-outline-warning" href="login.php">CREATE YOUR BLOG</a>
     </div>
